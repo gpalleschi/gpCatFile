@@ -1,4 +1,4 @@
-# gpCatFile
+gpCatFile
 An awk utility used to analize ascii file with records new line delimited
 
 This program is used to extract record (new line delimited) apply rules to select them

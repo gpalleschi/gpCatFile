@@ -1,10 +1,22 @@
-# gpCatFile.awk 1.0 by GPsoft 09/03/2020
 #
+# gpCatFile.awk 1.1 by GPsoft 10/03/2020
+#
+
+# Function to check length array
+function alen(a) {
+    len = 0	 
+    for(len in a);
+    return len 
+}
+
+
 BEGIN {
   iLine = 0;
+  iError = 0;
+  version = "gpCatFile.awk Ver 1.1 by Giovanni Palleschi 2020-03-09 "
   if ( ARGC < 2 )
   {
-     print "\n\ngpCatFile.awk by Giovanni Palleschi 2020-03-09 Ver 1.0"
+     printf "\n\n%s",version
      print "\nThis program is used to extract record (new line delimited) apply rules to select them"
      print "\n\nRunning GPef with these parameter :"
      print "\n\n cat 'Input File' | awk -f gpCatFile.awk 'Name Structure File' "
@@ -12,6 +24,10 @@ BEGIN {
      print "- Field Name "
      print "- Start Byte "
      print "- Length Field "
+     print "- function "
+     printf "\n\nV : To Show field "
+
+     iError = 1;
      exit;
   }
 
@@ -19,9 +35,10 @@ BEGIN {
   # Read structure file
   while(( getline line<ARGV[1]) > 0 ) {
     split(line, a, ";")
-    if ( length(a) != 3 )
+    if ( alen(a) != 4 )
     {
       printf "\n\nError line <%s> of file structure <%s> is in wrong format.\n\n",line,ARGV[1]
+      iError = 1;
       exit;
     }
     #Array Field Name
@@ -30,6 +47,8 @@ BEGIN {
     fstructS[ind] = a[2]
     #Array Field Length in Bytes
     fstructL[ind] = a[3]
+    #Array Function 
+    fstructF[ind] = a[4]
     ind++
   }
   close(ARGV[1])
@@ -39,12 +58,15 @@ BEGIN {
 {
   while(( getline line<"/dev/stdin") > 0 ) {
     printf "RECORD : %d\n",++iLine
-    for (i = 1; i <= length(fstructN); i++)
+    for (i in fstructN)
     {
-      printf("%s\t\t:\t'%s'\n",fstructN[i],substr(line,fstructS[i],fstructL[i]))
+      if ( fstructF[i] == "V" )
+      {	      
+        printf("%s\t\t:\t'%s'\n",fstructN[i],substr(line,fstructS[i],fstructL[i]))
+      }
     }
   }
 }
 END {
-  printf "\nTotal Records : %d\n",iLine
+  if ( iError == 0 ) printf "\nTotal Records : %d\n",iLine
 }
