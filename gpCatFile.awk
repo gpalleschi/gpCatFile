@@ -16,8 +16,8 @@ BEGIN {
   if ( ARGC < 2 )
   {
      printf "\n\n%s",version
-     print "\nThis program is used to visualize record (new line delimited) and its fields "
-     print "\nusing a file structure "
+     print "\n\nThis program is used to visualize record (new line delimited) and its fields "
+     print "using a file structure "
      print "\n\nRunning GPef with these parameter :"
      print "\n\n cat 'Input File' | awk -f gpCatFile.awk 'Name Structure File' "
      print "\n\nFormat Structure File (fields separated by ;) :"
