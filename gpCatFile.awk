@@ -9,7 +9,6 @@ function alen(a) {
     return len 
 }
 
-
 BEGIN {
   iLine = 0;
   iError = 0;
@@ -17,7 +16,8 @@ BEGIN {
   if ( ARGC < 2 )
   {
      printf "\n\n%s",version
-     print "\nThis program is used to extract record (new line delimited) apply rules to select them"
+     print "\nThis program is used to visualize record (new line delimited) and its fields "
+     print "\nusing a file structure "
      print "\n\nRunning GPef with these parameter :"
      print "\n\n cat 'Input File' | awk -f gpCatFile.awk 'Name Structure File' "
      print "\n\nFormat Structure File (fields separated by ;) :"
